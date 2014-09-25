@@ -24,5 +24,6 @@ module Monumentrove
       g.test_framework :minitest, spec: true, fixture: false
     end
 
+    config.active_record.schema_format = :sql
   end
 end

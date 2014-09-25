@@ -1,2 +1,9 @@
-%h1 Search#search
-%p Find me in app/views/search/search.html.haml
+= form_tag search_path, method: :get do |f|
+  = text_field_tag :query
+  = submit_tag "Search"
+
+%p "Results: #{@results.length}"
+%ul
+  - @results.each do |result|
+    %li
+      = result.monument_name

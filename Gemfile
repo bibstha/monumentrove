@@ -14,7 +14,8 @@ gem 'spring',        group: :development
 gem 'haml-rails'
 gem 'devise'
 gem 'bootstrap-sass', '>= 3.2'
-gem "paperclip", "~> 4.2"
+gem 'paperclip', '~> 4.2'
+gem 'textacular', '~> 3.0'
 
 group :test do
   gem 'minitest-rails'
