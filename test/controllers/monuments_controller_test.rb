@@ -108,29 +108,52 @@ describe MonumentsController do
 
   describe "#create" do
     it "associates monument with signed in user" do
-      user = create(:user)
+      user       = create(:user)
+      collection = create(:collection, name: "Collection A", user: user)
+      category   = create(:category, name: "Category 1", user: user)
+
       sign_in user
-      post :create, monument: {name: "Monument A"}
-      user.monuments.first.name.must_equal "Monument A"
+      post :create, monument: {name: "Monument A", collection_id: collection.id, category_id: category.id}
+
+      saved_monument = user.monuments.first
+      saved_monument.name.must_equal "Monument A"
+      saved_monument.collection.must_equal collection
+      saved_monument.category.must_equal category
     end
   end
 
   describe "#edit" do
     it "contains form with pre filled values" do
-      monument = create(:monument, name: "Monument A")
-      sign_in monument.user
+      user       = create(:user)
+      collection = create(:collection, name: "Collection A", user: user)
+      category   = create(:category, name: "Category 1", user: user)
+      monument = create(:monument, name: "Monument A", collection: collection, category: category, user: user)
+      sign_in user
       get :edit, id: monument.id
-      @response.body.must_have_field "monument_name", with: "Monument A"
+      
+      @response.body.must_have_field  "monument_name", with: "Monument A"
+      @response.body.must_have_select "monument_collection_id", options: ["Collection A"]
+      @response.body.must_have_select "monument_category_id",   options: ["Category 1"]
+      @response.body.must_have_button "Update Monument"
     end
   end
 
   describe "#update" do
     it "updates the name of the monument" do
-      monument = create(:monument, name: "Monument A")
-      sign_in monument.user
-      patch :update, id: monument.id, monument: {name: "Monument B"}
+      user       = create(:user)
+      collection1 = create(:collection, name: "Collection A", user: user)
+      collection2 = create(:collection, name: "Collection B", user: user)
+      category1   = create(:category, name: "Category 1", user: user)
+      category2   = create(:category, name: "Category 2", user: user)
+      monument = create(:monument, name: "Monument A", collection: collection1, category: category1, user: user)
+      sign_in user
+      patch :update, id: monument.id, monument: {name: "Monument B", collection_id: collection2.id, 
+        category_id: category2.id}
 
-      Monument.find(monument.id).name.must_equal "Monument B"
+      saved_monument = Monument.find(monument.id)
+      saved_monument.name.must_equal "Monument B"
+      saved_monument.category.must_equal category2
+      saved_monument.collection.must_equal collection2
     end
   end
 
