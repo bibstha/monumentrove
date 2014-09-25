@@ -108,7 +108,7 @@ describe CategoriesController do
     end
   end
 
-  describe "#update" do
+  describe "#edit" do
     it "contains form with pre filled values" do
       category = create(:category, name: "Category A")
       sign_in category.user
