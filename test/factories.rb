@@ -9,6 +9,7 @@ FactoryGirl.define do
   end
 
   factory :collection do
+    name "test_collection"
     user
   end
 

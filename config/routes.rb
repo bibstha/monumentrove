@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
-  # root to: "home#index"
+  resources :collections
+
+  devise_scope :user do
+    root to: "devise/sessions#new"
+  end
+  
 end
