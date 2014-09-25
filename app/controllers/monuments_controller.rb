@@ -19,6 +19,8 @@ class MonumentsController < ApplicationController
   end
 
   def show
+    @picture = Picture.new
+    @pictures = @monument.pictures
   end
 
   def create
@@ -51,6 +53,6 @@ class MonumentsController < ApplicationController
   end
 
   def monument_params
-    params.require(:monument).permit(:name, :category_id, :collection_id)
+    params.require(:monument).permit(:name, :description, :category_id, :collection_id)
   end
 end

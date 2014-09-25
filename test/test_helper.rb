@@ -35,3 +35,8 @@ class ActionController::TestCase
   # Devise helpers for functional tests
   include Devise::TestHelpers
 end
+
+# Cleanup
+MiniTest.after_run do
+  FileUtils.rm_rf(Dir["#{Rails.root}/test/uploads/"])
+end

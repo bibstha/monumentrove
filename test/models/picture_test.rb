@@ -1,4 +1,4 @@
-require "test_helper"
+require_relative "../test_helper"
 
 describe Picture do
   let(:picture) { build(:picture) }
@@ -7,10 +7,9 @@ describe Picture do
     picture.must_be :valid?
   end
 
-  it "can create with requried attributes" do
-    params = { name: "Test Picture" }
-    obj = Picture.create params
-    obj.wont_be :new_record?
-    obj.name.must_equal "Test Picture"
+  it "make sure image field is required" do
+    params = { name: "Test Picture Label" }
+    obj = Picture.new params
+    obj.wont_be :valid?
   end
 end

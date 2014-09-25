@@ -2,10 +2,20 @@
 %html
   %head
     %title MonumenTrove
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'application'
     = csrf_meta_tags
   %body
-    = render "shared/top_navbar"
-    = render "shared/left_sidebar"
-    = yield
+    .container
+      = render "shared/top_navbar"
+      .col-md-3
+        = render "shared/left_sidebar"
+      .col-md-9
+        - flash.each do |key, value|
+          .alert{class: "alert-#{key}"}
+            %a.close{href:"#", "data-dismiss"=>"alert"}×
+            %ul
+              %li 
+                = value
+        
+        = yield

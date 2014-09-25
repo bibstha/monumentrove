@@ -1,0 +1,10 @@
+%h1 My Monuments
+%div
+  = link_to "New", new_monument_path
+  
+%ul
+  - @monuments.each do |monument|
+    %li
+      = link_to monument.name, monument
+      = link_to "Edit", edit_monument_path(monument)
+      = link_to "Destroy", monument, method: :delete, data: { confirm: 'Are you sure?' }

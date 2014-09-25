@@ -56,12 +56,31 @@ describe MonumentsController do
 
     it "allows user to see his own content" do
       monument = create(:monument, name: "Monument 1")      
-
       sign_in monument.user
 
       get :show, id: monument.id
       assert_response :success
       @response.body.must_have_content "Monument 1"
+    end
+
+    it "contains picture upload form" do
+      monument = create(:monument, name: "Monument 1")
+      sign_in monument.user
+      get :show, id: monument.id
+      @response.body.must_have_field :picture_file
+      @response.body.must_have_field :picture_name
+      @response.body.must_have_field :picture_description
+      @response.body.must_have_field :picture_date
+    end
+
+    it "lists all pictures attached" do
+      picture1 = create(:picture)
+      common_monument = picture1.monument
+      picture2 = create(:picture, monument: common_monument)
+      sign_in common_monument.user
+      get :show, id: picture1.monument.id
+      @response.body.must_have_content "Picture #1"
+      @response.body.must_have_content "Picture #2"
     end
   end
 
@@ -113,10 +132,12 @@ describe MonumentsController do
       category   = create(:category, name: "Category 1", user: user)
 
       sign_in user
-      post :create, monument: {name: "Monument A", collection_id: collection.id, category_id: category.id}
+      post :create, monument: {name: "Monument A", description: "Desc", collection_id: collection.id, 
+        category_id: category.id}
 
       saved_monument = user.monuments.first
       saved_monument.name.must_equal "Monument A"
+      saved_monument.description.must_equal "Desc"
       saved_monument.collection.must_equal collection
       saved_monument.category.must_equal category
     end
@@ -145,13 +166,14 @@ describe MonumentsController do
       collection2 = create(:collection, name: "Collection B", user: user)
       category1   = create(:category, name: "Category 1", user: user)
       category2   = create(:category, name: "Category 2", user: user)
-      monument = create(:monument, name: "Monument A", collection: collection1, category: category1, user: user)
+      monument = create(:monument, name: "Monument A", description: "Desc", collection: collection1, category: category1, user: user)
       sign_in user
-      patch :update, id: monument.id, monument: {name: "Monument B", collection_id: collection2.id, 
+      patch :update, id: monument.id, monument: {name: "Monument B", description: "Desc2", collection_id: collection2.id, 
         category_id: category2.id}
 
       saved_monument = Monument.find(monument.id)
       saved_monument.name.must_equal "Monument B"
+      saved_monument.description.must_equal "Desc2"
       saved_monument.category.must_equal category2
       saved_monument.collection.must_equal collection2
     end

@@ -1,0 +1,15 @@
+Name:
+= @monument.name
+
+%div
+  = link_to "List", collections_path
+
+= render "pictures/form"
+
+%ul
+  - @pictures.each do |picture|
+    %li
+      = picture.name
+      = image_tag picture.image.url(:thumb)
+      = link_to "Edit", edit_monument_picture_path(@monument, picture)
+      = link_to "Destroy", [@monument, picture], method: :delete, data: {confirm: "Are you sure?"}

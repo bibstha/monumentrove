@@ -12,9 +12,15 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 
 gem 'haml-rails'
-gem 'minitest-rails'
 gem 'devise'
-gem "factory_girl_rails", "~> 4.0"
+gem 'bootstrap-sass', '>= 3.2'
+gem "paperclip", "~> 4.2"
+
+group :test do
+  gem 'minitest-rails'
+  gem 'factory_girl_rails', '~> 4.0'
+  gem 'capybara_minitest_spec'
+end
 
 group :development do
 end

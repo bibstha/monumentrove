@@ -1,3 +1,5 @@
+include ActionDispatch::TestProcess
+
 FactoryGirl.define do
   factory :user do
     sequence(:email) { |n| "person#{n}@example.com" }
@@ -21,5 +23,9 @@ FactoryGirl.define do
 
   factory :picture do
     monument
+    sequence(:name) { |n| "Picture ##{n}" }
+    description "Description"
+    date "2014/01/01"
+    image { fixture_file_upload 'test/fixtures/eifel_tower.jpg', 'image/jpg' }
   end
 end
