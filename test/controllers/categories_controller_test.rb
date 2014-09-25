@@ -1,5 +1,4 @@
 require "test_helper"
-require_relative "support/helpers"
 
 describe CategoriesController do
 
