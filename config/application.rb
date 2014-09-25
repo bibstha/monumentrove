@@ -23,5 +23,6 @@ module Monumentrove
     config.generators do |g|
       g.test_framework :minitest, spec: true, fixture: false
     end
+
   end
 end

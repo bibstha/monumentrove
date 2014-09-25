@@ -14,6 +14,7 @@ gem 'spring',        group: :development
 gem 'haml-rails'
 gem 'minitest-rails'
 gem 'devise'
+gem "factory_girl_rails", "~> 4.0"
 
 group :development do
 end

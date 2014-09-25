@@ -1,7 +1,7 @@
 require "test_helper"
 
 describe Monument do
-  let(:monument) { Monument.new }
+  let(:monument) { build(:monument) }
 
   it "must be valid" do
     monument.must_be :valid?
