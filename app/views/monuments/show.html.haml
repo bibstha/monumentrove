@@ -1,15 +1,30 @@
-Name:
-= @monument.name
-
-%div
-  = link_to "List", collections_path
-
+%h3
+  = @monument.name
+%div #{@monument.description}
+%hr
+%h5 Add New Picture
 = render "pictures/form"
-
-%ul
-  - @pictures.each do |picture|
-    %li
-      = picture.name
-      = image_tag picture.image.url(:thumb)
-      = link_to "Edit", edit_monument_picture_path(@monument, picture)
-      = link_to "Destroy", [@monument, picture], method: :delete, data: {confirm: "Are you sure?"}
+%hr
+%h5 Pictures
+- if @pictures.blank?
+  %p There are no pictures for this monument. Use the form above to add new Picture.
+- else
+  %table.table
+    %tr
+      %th.col-md-1 #
+      %th Picture
+      %th Description
+      %th.col-md-3 Actions
+    - @pictures.each.with_index do |picture, i|
+      %tr
+        %td #{i + 1}
+        %td #{image_tag picture.image.url(:thumb)}
+        %td
+          %div Name: #{picture.name}
+          %div Description: #{picture.description}
+          %div Date: #{picture.date}
+          %div Category: #{picture.monument.category.name}
+          %div Collection: #{picture.monument.collection.name}
+        %td 
+          = link_to "Edit", edit_monument_picture_path(@monument, picture), class: "btn btn-default btn-sm"
+          = link_to "Destroy", [@monument, picture], method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-default btn-sm"

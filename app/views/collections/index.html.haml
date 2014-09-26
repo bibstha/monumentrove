@@ -1,10 +1,24 @@
-%h1 My Collections
-%div
-  = link_to "New", new_collection_path
-  
-%ul
-  - @collections.each do |collection|
-    %li
-      = link_to collection.name, collection
-      = link_to "Edit", edit_collection_path(collection)
-      = link_to "Delete", collection, method: :delete, data: { confirm: 'Are you sure?' }
+%div.pull-right
+  = link_to "New Collection", new_collection_path, class: "btn btn-primary"
+%h3 My Collections
+- if @collections.empty?
+  %p 
+    You have no collections. Click
+    = link_to "here", new_collection_path
+    to add new collection.
+
+- else
+  %table.table
+    %tr
+      %th.col-md-1 #
+      %th Name
+      %th.col-md-3 Actions
+
+    - @collections.each.with_index do |collection, i|
+      %tr
+        %td #{i + 1}
+        %td #{link_to collection.name, collection}
+        %td
+          = link_to "Edit", edit_collection_path(collection), class: "btn btn-default btn-sm"
+          = link_to "Delete", collection, method: :delete, data: { confirm: 'Are you sure?' },
+            class: "btn btn-default btn-sm"

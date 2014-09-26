@@ -1,10 +1,24 @@
-%h1 My Monuments
-%div
-  = link_to "New", new_monument_path
+%div.pull-right
+  = link_to "New Monument", new_monument_path, class: "btn btn-primary"
+%h3 My Monuments
+- if @monuments.empty?
+  %p 
+    You have no monuments. Click
+    = link_to "here", new_monument_path
+    to add new monument.
   
-%ul
-  - @monuments.each do |monument|
-    %li
-      = link_to monument.name, monument
-      = link_to "Edit", edit_monument_path(monument)
-      = link_to "Destroy", monument, method: :delete, data: { confirm: 'Are you sure?' }
+- else
+  %table.table
+    %tr
+      %th.col-md-1 #
+      %th Name
+      %th.col-md-4 Actions
+
+    - @monuments.each.with_index do |monument, i|
+      %tr
+        %td #{i + 1}
+        %td #{link_to monument.name, monument}
+        %td
+          = link_to "Upload Pictures", monument, class: "btn btn-default btn-sm"
+          = link_to "Edit", edit_monument_path(monument), class: "btn btn-default btn-sm"
+          = link_to "Destroy", monument, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-default btn-sm"

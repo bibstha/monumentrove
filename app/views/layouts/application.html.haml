@@ -12,10 +12,10 @@
         = render "shared/left_sidebar"
       .col-md-9
         - flash.each do |key, value|
+          - key = "info" if key == "notice"
           .alert{class: "alert-#{key}"}
             %a.close{href:"#", "data-dismiss"=>"alert"}×
-            %ul
-              %li 
-                = value
+            %div
+              = value
         
         = yield

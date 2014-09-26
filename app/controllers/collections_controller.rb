@@ -21,7 +21,7 @@ class CollectionsController < ApplicationController
     @collection = current_user.collections.new(collection_params)
 
     if @collection.save
-      redirect_to @collection, notice: 'Collection was successfully created.'
+      redirect_to collections_url, notice: 'Collection was successfully created.'
     else
       render :new
     end
@@ -29,7 +29,7 @@ class CollectionsController < ApplicationController
 
   def update
     if @collection.update(collection_params)
-      redirect_to @collection, notice: 'Collection was successfully updated.'
+      redirect_to collections_url, notice: 'Collection was successfully updated.'
     else
       render :edit
     end

@@ -1,10 +1,24 @@
-%h1 My Categories
-%div
-  = link_to "New", new_category_path
-  
-%ul
-  - @categories.each do |category|
-    %li
-      = link_to category.name, category
-      = link_to "Edit", edit_category_path(category)
-      = link_to "Destroy", category, method: :delete, data: { confirm: 'Are you sure?' }
+%div.pull-right
+  = link_to "New Category", new_category_path, class: "btn btn-primary"
+%h3 My Categories
+- if @categories.empty?
+  %p 
+    You have no categories. Click
+    = link_to "here", new_category_path
+    to add new category.
+
+- else
+  %table.table
+    %tr
+      %th.col-md-1 #
+      %th Name
+      %th.col-md-3 Actions
+
+    - @categories.each.with_index do |category, i|
+      %tr
+        %td #{i + 1}
+        %td #{link_to category.name, category}
+        %td
+          = link_to "Edit", edit_category_path(category), class: "btn btn-default btn-sm"
+          = link_to "Destroy", category, method: :delete, data: { confirm: 'Are you sure?' },
+            class: "btn btn-default btn-sm"
