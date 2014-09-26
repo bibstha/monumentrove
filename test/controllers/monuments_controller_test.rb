@@ -179,4 +179,33 @@ describe MonumentsController do
     end
   end
 
+  describe '#coverflow' do
+    let(:user)     { create(:user) }
+    let(:category) { create(:category, name: "Asian", user: user) }
+    let(:monument1) { create(:monument, user: user, name: "Silver Pagoda", category: category) }
+    let(:monument2) { create(:monument, user: user, name: "Great Wall of China", category: category) }
+
+    before do
+      create(:picture, monument: monument1)
+      create(:picture, monument: monument1)
+      create(:picture, monument: monument1)
+
+      create(:picture, monument: monument2)
+      create(:picture, monument: monument2)
+      create(:picture, monument: monument2)
+    end
+    
+    it "loads all images for given monument" do
+      sign_in user
+      get :coverflow, id: monument1
+      @response.body.must_have_content "Picture ##{1}"
+      @response.body.must_have_content "Picture ##{2}"
+      @response.body.must_have_content "Picture ##{3}"
+
+      @response.body.wont_have_content "Picture ##{4}"
+      @response.body.wont_have_content "Picture ##{5}"
+      @response.body.wont_have_content "Picture ##{6}"      
+    end
+  end
+
 end

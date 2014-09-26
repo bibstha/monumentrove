@@ -1,2 +1,14 @@
-= render "form"
-
+%h3
+  = link_to @monument.name, @monument
+  \/
+  = @picture.name
+%div 
+  = @picture.description
+%div
+  Category: 
+  = link_to @monument.category.name, @monument.category
+%div
+  Collection: 
+  = link_to @monument.collection.name, @monument.collection
+%hr
+= image_tag @picture.image.url(:medium)

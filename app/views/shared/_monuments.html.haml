@@ -1,0 +1,5 @@
+- @monuments.each.with_index do |monument, i|
+  %h5
+    Monument #{i+1}:
+    = monument.name
+  = render partial: "shared/pictures", locals: {pictures: monument.pictures} 

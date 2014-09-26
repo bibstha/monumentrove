@@ -1,0 +1,11 @@
+.flipster
+  %ul
+    - @pictures.each do |picture|
+      %li
+        = image_tag picture.image.url(:medium)
+        %div
+          = picture.name
+          = link_to "View", [@monument, picture]
+    
+:javascript
+  $(function(){ $('.flipster').flipster(); });

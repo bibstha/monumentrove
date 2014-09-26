@@ -1,0 +1,19 @@
+%table.table
+  %tr
+    %th.col-md-1 #
+    %th Picture
+    %th Description
+    %th.col-md-3 Actions
+  - pictures.each.with_index do |picture, i|
+    %tr
+      %td #{i + 1}
+      %td #{image_tag picture.image.url(:thumb)}
+      %td
+        %div Name: #{picture.name}
+        %div Description: #{picture.description}
+        %div Date: #{picture.date}
+        %div Category: #{picture.monument.category.name}
+        %div Collection: #{picture.monument.collection.name}
+      %td 
+        = link_to "Edit", edit_monument_picture_path(picture.monument, picture), class: "btn btn-default btn-sm"
+        = link_to "Destroy", [picture.monument, picture], method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-default btn-sm"

@@ -5,28 +5,11 @@
 %h5 Add New Picture
 = render "pictures/form"
 %hr
-%div.pull-right.coverflow-btn
-  = link_to "Start Cover Flow", monument_coverflow_path(@monument), class: "btn btn-success"
-%h4 Pictures
 - if @pictures.blank?
+  %h4 Pictures
   %p There are no pictures for this monument. Use the form above to add new Picture.
 - else
-  %table.table
-    %tr
-      %th.col-md-1 #
-      %th Picture
-      %th Description
-      %th.col-md-3 Actions
-    - @pictures.each.with_index do |picture, i|
-      %tr
-        %td #{i + 1}
-        %td #{image_tag picture.image.url(:thumb)}
-        %td
-          %div Name: #{picture.name}
-          %div Description: #{picture.description}
-          %div Date: #{picture.date}
-          %div Category: #{picture.monument.category.name}
-          %div Collection: #{picture.monument.collection.name}
-        %td 
-          = link_to "Edit", edit_monument_picture_path(@monument, picture), class: "btn btn-default btn-sm"
-          = link_to "Destroy", [@monument, picture], method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-default btn-sm"
+  %div.pull-right.coverflow-btn
+    = link_to "Start Cover Flow", monument_coverflow_path(@monument), class: "btn btn-success"
+  %h4 Pictures
+  = render partial: "shared/pictures", locals: {pictures: @pictures}

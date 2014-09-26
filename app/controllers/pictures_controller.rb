@@ -1,7 +1,7 @@
 class PicturesController < ApplicationController
   
   before_action :authenticate_user!
-  before_action :set_monument_and_picture, only: [:edit, :update, :destroy]
+  before_action :set_monument_and_picture, only: [:show, :edit, :update, :destroy]
 
   def show
   end

@@ -1,5 +1,6 @@
-Name:
-= @collection.name
+%h3
+  = link_to "Collections", collections_url
+  \/
+  = @collection.name
 
-%div
-  = link_to "List", collections_path
+= render "shared/monuments"

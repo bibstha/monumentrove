@@ -1,5 +1,6 @@
-Name:
-= @category.name
+%h3
+  = link_to "Categories", categories_url
+  \/
+  = @category.name
 
-%div
-  = link_to "List", categories_path
+= render "shared/monuments"

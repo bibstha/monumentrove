@@ -15,6 +15,7 @@ class CategoriesController < ApplicationController
   end
 
   def show
+    @monuments = @category.monuments
   end
 
   def create

@@ -15,6 +15,7 @@ class CollectionsController < ApplicationController
   end
 
   def show
+    @monuments = @collection.monuments
   end
 
   def create

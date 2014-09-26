@@ -1,7 +1,7 @@
 class MonumentsController < ApplicationController
   
   before_action :authenticate_user!
-  before_action :set_monument, only: [:show, :edit, :update, :destroy]
+  before_action :set_monument, only: [:show, :edit, :update, :destroy, :coverflow]
 
   def index
     @monuments = current_user.monuments
@@ -44,6 +44,10 @@ class MonumentsController < ApplicationController
   def destroy
     @monument.destroy
     redirect_to monuments_url, notice: 'Monument was successfully destroyed.'
+  end
+
+  def coverflow
+    @pictures = @monument.pictures
   end
 
   private
