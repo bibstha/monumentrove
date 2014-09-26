@@ -21,7 +21,7 @@ describe 'User Registration Integration Test' do
       fill_in "user_password_confirmation", with: "test_user_pass"
       click_button "Sign up"
 
-      find('.alert li').must_have_content "Welcome! You have signed up successfully."
+      find('.alert div').must_have_content "Welcome! You have signed up successfully."
       find('.header .navbar-text').must_have_content "testuser@example.com"
 
     end

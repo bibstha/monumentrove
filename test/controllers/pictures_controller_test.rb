@@ -5,8 +5,7 @@ describe PicturesController do
   describe "#show" do
     it "doesn't allow unauthenticated user to access picture" do
       picture = create(:picture)
-
-      get :show, id: picture.id
+      get :show, id: picture.id, monument_id: picture.monument.id
       assert_response :redirect
       assert_redirected_to user_session_path
     end
@@ -14,20 +13,19 @@ describe PicturesController do
     it "doesn't allow user to access picture belonging to another user" do
       user1 = create(:user)
       user2 = create(:user)
-
-      picture1 = create(:picture, user: user1, name: "Picture 1")
+      monument = create(:monument, user: user1)
+      picture1 = create(:picture, name: "Picture 1", monument: monument)
 
       sign_in user2
 
-      proc { get :show, id: picture1.id }.must_raise ActiveRecord::RecordNotFound
+      proc { get :show, id: picture1.id, monument_id: monument }.must_raise ActiveRecord::RecordNotFound
     end
 
     it "allows user to see his own content" do
-      picture = create(:picture, name: "Picture 1")      
+      picture = create(:picture, name: "Picture 1")
+      sign_in picture.monument.user
 
-      sign_in picture.user
-
-      get :show, id: picture.id
+      get :show, id: picture.id, monument_id: picture.monument
       assert_response :success
       @response.body.must_have_content "Picture 1"
     end
@@ -36,7 +34,7 @@ describe PicturesController do
   describe "#destroy" do
     it "redirects unauthorized user when deleting picture" do
       picture = create(:picture)
-      delete :destroy, id: picture.id
+      delete :destroy, id: picture.id, monument_id: picture.monument
       assert_response :redirect
       assert_redirected_to user_session_path
     end
@@ -45,24 +43,14 @@ describe PicturesController do
       picture = create(:picture)
       another_user = create(:user)
       sign_in another_user
-      proc { delete :destroy, id: picture.id }.must_raise ActiveRecord::RecordNotFound
+      proc { delete :destroy, id: picture.id, monument_id: picture.monument.id }.must_raise ActiveRecord::RecordNotFound
     end
 
     it "allows user to delete own picture" do
       picture = create(:picture)
-      sign_in picture.user
-      delete :destroy, id: picture.id
+      sign_in picture.monument.user
+      delete :destroy, id: picture.id, monument_id: picture.monument.id
       Picture.wont_be :exists?, picture
-    end
-  end
-
-  describe "#new" do
-    it "contains form for new picture entry" do
-      user = create(:user)
-      sign_in user
-      get :new
-      @response.body.must_have_field  "picture_name"
-      @response.body.must_have_button "Create Picture"
     end
   end
 
@@ -81,8 +69,8 @@ describe PicturesController do
   describe "#edit" do
     it "contains form with pre filled values" do
       picture = create(:picture, name: "Picture A")
-      sign_in picture.user
-      get :edit, id: picture.id
+      sign_in picture.monument.user
+      get :edit, id: picture.id, monument_id: picture.monument.id
       @response.body.must_have_field "picture_name", with: "Picture A"
     end
   end
@@ -90,8 +78,8 @@ describe PicturesController do
   describe "#update" do
     it "updates the name of the picture" do
       picture = create(:picture, name: "Picture A")
-      sign_in picture.user
-      patch :update, id: picture.id, picture: {name: "Picture B"}
+      sign_in picture.monument.user
+      patch :update, id: picture.id, monument_id: picture.monument.id, picture: {name: "Picture B"}
 
       Picture.find(picture.id).name.must_equal "Picture B"
     end

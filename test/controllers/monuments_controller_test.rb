@@ -67,7 +67,7 @@ describe MonumentsController do
       monument = create(:monument, name: "Monument 1")
       sign_in monument.user
       get :show, id: monument.id
-      @response.body.must_have_field :picture_file
+      @response.body.must_have_field :picture_image
       @response.body.must_have_field :picture_name
       @response.body.must_have_field :picture_description
       @response.body.must_have_field :picture_date
@@ -79,8 +79,8 @@ describe MonumentsController do
       picture2 = create(:picture, monument: common_monument)
       sign_in common_monument.user
       get :show, id: picture1.monument.id
-      @response.body.must_have_content "Picture #1"
-      @response.body.must_have_content "Picture #2"
+      @response.body.must_have_content picture1.name
+      @response.body.must_have_content picture2.name
     end
   end
 
@@ -185,26 +185,24 @@ describe MonumentsController do
     let(:monument1) { create(:monument, user: user, name: "Silver Pagoda", category: category) }
     let(:monument2) { create(:monument, user: user, name: "Great Wall of China", category: category) }
 
-    before do
-      create(:picture, monument: monument1)
-      create(:picture, monument: monument1)
-      create(:picture, monument: monument1)
-
-      create(:picture, monument: monument2)
-      create(:picture, monument: monument2)
-      create(:picture, monument: monument2)
-    end
-    
     it "loads all images for given monument" do
+      p1 = create(:picture, monument: monument1)
+      p2 = create(:picture, monument: monument1)
+      p3 = create(:picture, monument: monument1)
+
+      p4 = create(:picture, monument: monument2)
+      p5 = create(:picture, monument: monument2)
+      p6 = create(:picture, monument: monument2)
+
       sign_in user
       get :coverflow, id: monument1
-      @response.body.must_have_content "Picture ##{1}"
-      @response.body.must_have_content "Picture ##{2}"
-      @response.body.must_have_content "Picture ##{3}"
+      @response.body.must_have_content p1.name
+      @response.body.must_have_content p2.name
+      @response.body.must_have_content p3.name
 
-      @response.body.wont_have_content "Picture ##{4}"
-      @response.body.wont_have_content "Picture ##{5}"
-      @response.body.wont_have_content "Picture ##{6}"      
+      @response.body.wont_have_content p4.name
+      @response.body.wont_have_content p5.name
+      @response.body.wont_have_content p6.name
     end
   end
 

@@ -19,7 +19,7 @@ describe 'User Sign Up Integration Test' do
       fill_in "user_password", with: "wrong_password"
       click_button "Sign in"
 
-      find('.alert li').must_have_content "Invalid email or password."
+      find('.alert div').must_have_content "Invalid email or password."
     end
 
     it "allows valid user to login" do
@@ -30,7 +30,7 @@ describe 'User Sign Up Integration Test' do
       fill_in "user_password", with: "test_user_pass"
       click_button "Sign in"
 
-      find('.alert li').must_have_content "Signed in successfully."
+      find('.alert div').must_have_content "Signed in successfully."
       find('.header').must_have_content "testuser@example.com"
     end
   end

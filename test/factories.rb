@@ -7,6 +7,7 @@ FactoryGirl.define do
   end
 
   factory :category do
+    name "test_category"
     user
   end
 
