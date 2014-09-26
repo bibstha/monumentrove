@@ -1,1 +1,5 @@
 = render "form"
+
+%hr
+%h5 You are editing the following picture
+= image_tag @picture.image.url(:medium)

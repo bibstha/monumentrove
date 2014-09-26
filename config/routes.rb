@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :categories
   resources :monuments do
     resources :pictures
+    get "coverflow", to: "monument#coverflow"
   end
 
   get 'search', to: 'search#search', as: 'search'

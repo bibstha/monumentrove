@@ -5,7 +5,9 @@
 %h5 Add New Picture
 = render "pictures/form"
 %hr
-%h5 Pictures
+%div.pull-right.coverflow-btn
+  = link_to "Start Cover Flow", monument_coverflow_path(@monument), class: "btn btn-success"
+%h4 Pictures
 - if @pictures.blank?
   %p There are no pictures for this monument. Use the form above to add new Picture.
 - else
